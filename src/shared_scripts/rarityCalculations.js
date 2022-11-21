@@ -7,6 +7,14 @@ export const _RARITY = {
     pony: `--tr-rarity-pony`
 }
 
-export function rareToColor(rare) {
+export function rareToBorderColor(rare) {
     return `border-color: var(${rare})`        
+}
+
+export function rarity_text_shadow(rarity) {
+    return `text-shadow: 0px 0px 12px var(${rarity})`
+}
+
+export function rarity_color(rarity) {
+    return `color: var(${rarity})`
 }

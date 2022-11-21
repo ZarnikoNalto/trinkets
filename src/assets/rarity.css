@@ -1,8 +1,37 @@
 :root{
-    --tr-rarity-common: #e8f8c1;
+    --tr-rarity-common: #d4ff67;
     --tr-rarity-uncommon: #82f7d9;
-    --tr-rarity-rare: #6fb2ff;
-    --tr-rarity-mystic: #c373f1;
-    --tr-rarity-legendary: #f3b059;
-    --tr-rarity-pony: #ff00f2;
+    --tr-rarity-rare: #1a79e7;
+    --tr-rarity-mystic: #b437fc;
+    --tr-rarity-legendary: #c56f00;
+    --tr-rarity-pony: #ff006a;
+}
+
+
+.common{
+    color: var(--tr-rarity-common);
+}
+
+.uncommon{
+    color: var(--tr-rarity-uncommon);
+}
+
+.rare{
+    color: var(--tr-rarity-rare);
+}
+
+.mystic{
+    color: var(--tr-rarity-mystic);
+}
+
+.legendary{
+    color: var(--tr-rarity-legendary);
+}
+
+.pony{
+    color: var(--tr-rarity-pony);
+}
+
+.onhover:hover{
+    filter: brightness(0.1);
 }

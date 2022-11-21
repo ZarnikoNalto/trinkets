@@ -1,6 +1,8 @@
 <script setup>
-import { rareToColor } from '../shared_scripts/rarityCalculations.js';
-import { ref } from 'vue';
+import { rarity_text_shadow } from '../shared_scripts/rarityCalculations.js';
+import { ref, onMounted } from 'vue';
+import Field from './trinket/Field.vue';
+import Line from './trinket/Line.vue';
 
 const trinket = defineProps({
     displayName: String,
@@ -15,129 +17,86 @@ const trinket = defineProps({
     applied_statuses: Array
 })
 
-const abilitiesFlag = ref(false);
-const resistFlag = ref(false);
-const statFlag = ref(false);
-const buffFlag = ref(false);
+function objToArr(obj) {
+    const result = [];
+    for (let key in obj) {
+        result.push(`${key}: ${obj[key]}`);
+    }
+    return result;
+}
+
+// onMounted(() => {
+//     debugger;
+//     document.querySelectorAll('.link').forEach((item)=>{
+//         item.style.color = `var(${trinket.rarity_color})`;
+//     })
+// });
 
 </script>
 
 <template>
     <div class="window trinket">
         <div class="title-bar">
-            <h4 class="title-bar-text displayName">
+            <h3 class="title-bar-text displayName">
                 {{ trinket.displayName }}
-            </h4>
+            </h3>
             <div class="title-bar-controls">
                 <button aria-label="Close"></button>
             </div>
         </div>
 
         <div class="window-body trinket-body">
-            <div class="left_pad">
-                <div class="field description" v-if="trinket.description">
+            <div class="">
+                <div class="diplayNameHolder">
+
+                    <i class="ra icon" :class="trinket.icon === undefined ? 'ra-crown-of-thorns' : `${trinket.icon}`"
+                        :style="rarity_text_shadow(trinket.rarity)" />
+
+                    <h3 class="title-bar-text displayName">
+                        {{ trinket.displayName }}
+                    </h3>
+                </div>
+
+                <div class="field description border-bump line" v-if="trinket.description">
                     <h4>Описание:</h4>
                     <p>
                         {{ trinket.description }}
                     </p>
                 </div>
 
-                <div class="field abilities" v-if="trinket.abilities">
-                    <div class="title-bar-controls line">
-                        <h4>
-                            Абилки
-                        </h4>
-                        <button :aria-label="abilitiesFlag?'Restore':'Maximize'" @click="abilitiesFlag = !abilitiesFlag"></button>
-                    </div>
-                    <div v-if="abilitiesFlag">
-                        <ul>
-                            <li v-for="(val) in trinket.abilities">
-                                {{ val }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="field resists" v-if="trinket.resists">
-                    <div class="title-bar-controls line">
-                        <h4>
-                            Резисты
-                        </h4>
-                        <button :aria-label="resistFlag?'Restore':'Maximize'" @click="resistFlag = !resistFlag"></button>
-                    </div>
-                    <div v-if="resistFlag">    
-                        <ul>
-                            <li v-for="(val) in trinket.resists">
-                                {{ val }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="field applied_statuses" v-if="trinket.applied_statuses">
-                    <div class="title-bar-controls line">
-                        <h4>
-                            Статусы
-                        </h4>
-                        <button :aria-label="statFlag?'Restore':'Maximize'" @click="statFlag = !statFlag"></button>
-                    </div>
-                    <div v-if="statFlag">
-                        <ul>
-                            <li v-for="(val) in trinket.applied_statuses">
-                                {{ val }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="field buffs" v-if="trinket.buffs">
-                    <div class="title-bar-controls line">
-                        <h4>
-                            Баффы
-                        </h4>
-                        <button :aria-label="buffFlag?'Restore':'Maximize'" @click="buffFlag = !buffFlag"></button>
-                    </div>
-                    <div v-if="buffFlag">
-                        <ul>
-                            <li v-for="(val, skill) in trinket.buffs">
-                                {{ skill }}: {{ val }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="right_pad">
-                <div class="icon">
-                    <img class="trinket-img" :src="trinket.icon" :style="rareToColor(trinket.rarity)"
-                        v-if="trinket.icon" />
-                </div>
-
-                <div class="requirments">
-                    <div class="field skill_req" v-if="trinket.skill_req">
-                        <h4>
+                <div class="requirments line">
+                    <ul class="tree-view skill_req" v-if="trinket.skill_req">
+                        <li>
                             Скиллы
-                        </h4>
+                        </li>
                         <ul>
-                            <li v-for="(val, skill) in trinket.skill_req">
-                                {{ skill }}: {{ val }}
+                            <li class="sub-line" v-for="(val) in objToArr(trinket.skill_req)">
+                                {{ val }}
                             </li>
                         </ul>
-                    </div>
+                    </ul>
 
-                    <div class="field attr_req" v-if="trinket.attr_req">
-                        <h4>
+                    <ul class="tree-view attr_req" v-if="trinket.skill_req">
+                        <li>
                             Аттрибуты
-                        </h4>
+                        </li>
                         <ul>
-                            <li v-for="(val, skill) in trinket.attr_req">
-                                {{ skill }}: {{ val }}
+                            <li class="sub-line" v-for="(val) in objToArr(trinket.attr_req)">
+                                {{ val }}
                             </li>
                         </ul>
-                    </div>
+                    </ul>
+                </div>
+
+                <div class="links line">
+                    <Line ftitle="Абилки" :items="trinket.abilities" :color="trinket.rarity"/>
+                    <Line ftitle="Резисты" :items="trinket.resists" :color="trinket.rarity"/>
+                    <Line ftitle="Статусы" :items="trinket.applied_statuses" :color="trinket.rarity"/>
+                    <Line ftitle="Баффы" :items="trinket.buffs" :color="trinket.rarity"/>
                 </div>
 
             </div>
+
         </div>
     </div>
 </template>
@@ -145,81 +104,135 @@ const buffFlag = ref(false);
 
 
 <style scoped>
-@import url('../assets/98.css');
+/* @import url('../assets/98.css'); */
 
 .window {
     color: #222;
     -webkit-font-smoothing: none;
-    font-family: "Pixelated MS Sans Serif", Arial;
-    font-size: 11px
+    /* font-family: "Pixelated MS Sans Serif", Arial; */
+    font-size: 12px
 }
 
 .trinket {
-    width: 50vw;
+    width: 600px;
+}
+
+.displayName {
+    font-size: 18px;
+}
+
+.diplayNameHolder{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.diplayNameHolder .displayName {
+    display: block;
+    font-family: 'Press Start 2P', cursive;
+    width: max-content;
+
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+    color: #222;
+}
+
+.flex-center {
+    display: flex;
+    place-items: center;
+    justify-content: center;
 }
 
 h4 {
-    font-size: 1.5em;
+    font-size: 14px;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .trinket-body {
     display: grid;
-    grid-template-columns: 2.5fr 1.6fr;
+    grid-template-columns: 1fr;
     column-gap: 1rem;
 
     padding: 0 1rem;
 }
 
-.trinket-img {
-    --img-size: 100%;
-    width: var(--img-size);
-    /*height: var(--img-size);    */
-
-    box-sizing: border-box;
-    border-width: 5px;
-    border-style: solid;
+.icon{
+    font-size: 36px;
+    display: block;
+    text-align: center;
 }
 
 .title-bar-controls {
     margin-right: 5px;
 }
 
-.field {
-    box-sizing: border-box;
-    padding: 2px 5px;
-    margin-bottom: 5px;
-    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf
-}
-
-.field:last-child {
-    margin-bottom: 0px;
-}
-
 .requirments {
     display: grid;
-    grid-template-columns: 0.7fr 1fr;
-    column-gap: 2px;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+
+    margin-bottom: 5px;
 }
 
 .requirments ul {
-    margin-left: 8px;
-    padding-left: 8px
+    margin-left: 0;
+    /* margin-right: 5px; */
 }
 
-.skill_req {
+li {
+    margin-bottom: 5px;
+}
+
+.icon {
+    margin-bottom: 5px;
+}
+
+.h_100 {
     height: 100%;
 }
 
-.attr_req {
-    height: 100%;
+.fs_12px {
+    font-size: 12px;
 }
 
-.line{
-    display: flex;
-    justify-content: space-between;
+.fs_14px {
+    font-size: 14px;
+}
+
+.field {
+    box-sizing: border-box;
+    padding: 6px 8px;
+
+    line-height: 0.85;
+}
+
+.line {
+    margin-bottom: 5px;
+}
+
+.align-center {
     align-items: center;
 }
-.line button{
-    height: max-content;
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.border-bump {
+    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
+}
+
+.border-window {
+    background: #fff;
+    box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+
+    padding: 4px 9px;
 }
 </style>

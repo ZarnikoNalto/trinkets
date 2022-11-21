@@ -85,7 +85,7 @@ input[type="submit"]:not(:disabled):active {
     inset -2px -2px #dfdfdf, inset 2px 2px grey;
   padding: 2px 11px 0 13px;
 }
-@media (not(hover)) {
+@media ("not(hover)") {
   button:not(:disabled):hover,
   input[type="reset"]:not(:disabled):hover,
   input[type="submit"]:not(:disabled):hover {

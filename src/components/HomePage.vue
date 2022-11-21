@@ -1,6 +1,6 @@
 <script setup>
 import Trinket from './Trinket.vue'
-import { rareToColor, _RARITY } from '../shared_scripts/rarityCalculations.js'
+import { rareToBorderColor, _RARITY } from '../shared_scripts/rarityCalculations.js'
 
 </script>
 
@@ -9,8 +9,8 @@ import { rareToColor, _RARITY } from '../shared_scripts/rarityCalculations.js'
     <Trinket 
         display-name = "MLP Trinket"
         description = "Самое лучшее и магически сильное ожерелье, дарующее своему пользователю уйму радужных возможностей!"
-        :rarity = "_RARITY.legendary"
-        icon="https://media.discordapp.net/attachments/1033849013407055953/1042111744660742204/unknown.png"
+        :rarity = "_RARITY.mystic"
+        icon="ra-alien-fire"
         :skill_req = "{
             REBORIA: 5,
             THEURGY: 4,
@@ -20,13 +20,10 @@ import { rareToColor, _RARITY } from '../shared_scripts/rarityCalculations.js'
             DETERMINATION: 5,
             PERCEPTION: 2
         }"
-        :buffs = "{
-            extra_income_precision: 10,
-            extra_focus_price: 5,
-        }"
-        :abilities = "['Полёт - Позволяет летать', 'Радуга - Позволяет блевать радугой']"
-        :resists = '["Свет - Неуязвимость к тьме", "Я - Не придумал ещё резист"]'
-        :applied_statuses = '["Красота - Делает пользователя невероятной красоты!", "Общение - Позволяет пользователю общаться с природой."]'
+        :buffs = '["Усиление привлекательности", "Бонус к отношениям"]'
+        :abilities = "['Полёт', 'Радуга', 'Золото']"
+        :resists = '["Свет", "Тьма"]'
+        :applied_statuses = '["Красота", "Общение"]'
     />
 
 </template>
